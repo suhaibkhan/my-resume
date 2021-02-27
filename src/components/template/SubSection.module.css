@@ -1,0 +1,34 @@
+.subSection {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2.5mm;
+}
+
+.subSection:first-child {
+  margin-top: 0.5mm;
+}
+
+.subSectionHead {
+  display: flex;
+  justify-content: space-between;
+}
+.subSecIcon {
+  font-size: 0.825em;
+}
+.subSecLocText {
+  font-size: 0.825em;
+  text-transform: uppercase;
+}
+.subSecDateText {
+  font-size: 0.825em;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.subSecTitleText {
+  font-weight: 700;
+  font-size: 1.1em;
+}
+.subSecSubTitleText {
+  font-size: 1.1em;
+  font-weight: 300;
+}

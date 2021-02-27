@@ -1,0 +1,9 @@
+.section {
+  margin-top: 6mm;
+}
+.sectionTitle {
+  font-weight: 300;
+  font-size: 1.65em;
+  text-transform: uppercase;
+  padding-bottom: 2mm;
+}

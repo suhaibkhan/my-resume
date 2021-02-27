@@ -1,0 +1,166 @@
+{
+  "templateName": "LatestTemplate",
+  "documentType": "Resume",
+  "dataGroups": [
+    {
+      "groupId": "WORK_EXP",
+      "dataFields": [
+        {
+          "field": "company",
+          "description": "Company"
+        },
+        {
+          "field": "location",
+          "description": "Location"
+        },
+        {
+          "field": "role",
+          "description": "Role"
+        },
+        {
+          "field": "dateRange",
+          "description": "From - To"
+        },
+        {
+          "field": "contributions",
+          "description": "Acheivements",
+          "type": "MULTILINE",
+          "multiple": true
+        }
+      ]
+    },
+    {
+      "groupId": "SKILL_SET",
+      "dataFields": [
+        {
+          "field": "category",
+          "description": "Category"
+        },
+        {
+          "field": "skills",
+          "description": "Skills",
+          "type": "SKILLS",
+          "multiple": true
+        }
+      ]
+    },
+    {
+      "groupId": "SKILLS",
+      "dataFields": [
+        {
+          "field": "label",
+          "description": "Label"
+        },
+        {
+          "field": "rating",
+          "description": "Rating",
+          "type": "SELECT",
+          "data": {
+            "options": [
+              { "name": "Proficient", "value": 2 },
+              { "name": "Familiar", "value": 1 }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "groupId": "EDUCATION",
+      "dataFields": [
+        {
+          "field": "degree",
+          "description": "Degree"
+        },
+        {
+          "field": "school",
+          "description": "School / College / University"
+        },
+        {
+          "field": "dateRange",
+          "description": "From - To"
+        },
+        {
+          "field": "details",
+          "description": "Details",
+          "type": "MULTILINE"
+        }
+      ]
+    },
+    {
+      "groupId": "LABEL_VAL_PAIR",
+      "dataFields": [
+        {
+          "field": "label",
+          "description": "Label"
+        },
+        {
+          "field": "value",
+          "description": "Details"
+        }
+      ]
+    }
+  ],
+  "dataFields": [
+    {
+      "field": "docTitle",
+      "description": "Document Title"
+    },
+    {
+      "field": "name",
+      "description": "Name"
+    },
+    {
+      "field": "currentLocation",
+      "description": "Current Location"
+    },
+    {
+      "field": "contactNumber",
+      "description": "Contact Number"
+    },
+    {
+      "field": "email",
+      "description": "Email"
+    },
+    {
+      "field": "skype",
+      "description": "Skype"
+    },
+    {
+      "field": "github",
+      "description": "Github URL"
+    },
+    {
+      "field": "linkedin",
+      "description": "Linkedin URL"
+    },
+    {
+      "field": "summary",
+      "description": "Summary",
+      "type": "MULTILINE"
+    },
+    {
+      "field": "skillSet",
+      "description": "Skill Sets",
+      "multiple": true,
+      "type": "SKILL_SET"
+    },
+    {
+      "field": "experience",
+      "description": "Work Experience",
+      "multiple": true,
+      "type": "WORK_EXP"
+    },
+    {
+      "field": "education",
+      "description": "Education",
+      "multiple": true,
+      "type": "EDUCATION"
+    },
+    {
+      "field": "personalDetails",
+      "description": "Personal Details",
+      "multiple": true,
+      "type": "LABEL_VAL_PAIR"
+    }
+  ]
+}

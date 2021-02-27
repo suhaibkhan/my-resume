@@ -1,0 +1,57 @@
+.app {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+
+.toolbar {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 999;
+}
+
+.panels {
+  display: flex;
+  height: 100%;
+}
+
+.panels > div {
+  flex: 1;
+  /* max-width: 50%; */
+  height: 100%;
+}
+
+.docContainer {
+  overflow: auto;
+  background: rgb(204, 204, 204);
+}
+
+.editContainer {
+  padding: 16px;
+  overflow-x: auto;
+}
+
+.hideEdit .editContainer {
+  display: none;
+}
+
+@media print {
+  .editContainer {
+    display: none;
+  }
+
+  .app {
+    height: auto !important;
+  }
+
+  .panels {
+    display: block;
+    height: auto !important;
+  }
+  .docContainer {
+    max-width: 100% !important;
+    margin: 0;
+    padding: 0;
+  }
+}
