@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from 'react';
-import Doc from './components/Doc';
-import Template, { templateDef } from './components/template';
-import resumeData from './data/resume.json';
+import { Button, Icon } from 'semantic-ui-react';
 import styles from './App.module.css';
+import Doc from './components/Doc';
 import { getGroupDefMap, isIEOrEdge, validateData } from './utils/utils';
 import DataEditor from './components/data-editor/DataEditor';
 import TemplateDefContext from './templatedef-context';
-import { Button, Icon } from 'semantic-ui-react';
+import Template, { templateDef } from './components/template';
+import resumeData from './data/resume.json';
 
 function App() {
   const groupDefMap = useMemo(() => getGroupDefMap(templateDef), []);
