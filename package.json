@@ -2,6 +2,7 @@
   "name": "resume-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/my-resume",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
     "@fortawesome/free-brands-svg-icons": "^5.15.2",
@@ -27,7 +28,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "git subtree push --prefix build origin gh-pages"
   },
   "eslintConfig": {
     "extends": [
