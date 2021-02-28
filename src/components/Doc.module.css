@@ -19,5 +19,6 @@
     box-shadow: none !important;
     margin: 0 !important;
     transform: none !important;
+    zoom: normal !important;
   }
 }

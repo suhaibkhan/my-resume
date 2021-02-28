@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import styles from './Doc.module.css';
 
 interface DocProps {
@@ -7,9 +7,16 @@ interface DocProps {
 }
 
 function Doc({ children, scale }: DocProps) {
+  const zoomSupported = true;
+  const docStyles: CSSProperties = {};
+  if (zoomSupported) {
+    docStyles['zoom'] = `${scale}`;
+  } else {
+    docStyles['transform'] = `scale(${scale})`;
+  }
   return (
     <div className={styles.doc}>
-      <div style={{ transform: `scale(${scale})` }}>{children}</div>
+      <div style={docStyles}>{children}</div>
     </div>
   );
 }
