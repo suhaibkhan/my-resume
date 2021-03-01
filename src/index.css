@@ -1,16 +1,16 @@
-/* @import-normalize; /* bring in normalize.css styles */
+@import-normalize; /* bring in normalize.css styles
 
 /* rest of app styles */
 
-/* body {
+body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: rgb(204, 204, 204);
-}  */
+  background: rgb(204, 204, 204); */
+}
 
 @media print {
   .hideInPrint {
@@ -26,9 +26,9 @@
   height: 100%;
 }
 
-.ui.button {
+/* .ui.button {
   text-transform: uppercase;
-}
+} */
 
 /*
 body {

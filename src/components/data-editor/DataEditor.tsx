@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useContext } from 'react';
-import { Button, Card, Form, Input, Select, TextArea } from 'semantic-ui-react';
+import { Button, Card, Input, Textarea, Select } from '@geist-ui/react';
 import TemplateDefContext from '../../templatedef-context';
 import {
   DATAFIELD_NATIVE_TYPES as NATIVE_TYPES,
@@ -10,16 +10,15 @@ import {
 import styles from './DataEditor.module.css';
 import { TemplateDataFieldDef, ViewData } from './template-def.model';
 
+interface DataEditorProps {
+  data: Record<string, any>;
+  onDataChange: (data: Record<string, any>) => void;
+}
+
 const DataChangeContext = React.createContext<DataEditorProps>({
   data: {},
   onDataChange: (data) => {},
 });
-
-const typeElemMap = {
-  [NATIVE_TYPES.INPUT]: Input,
-  [NATIVE_TYPES.MULTILINE]: TextArea,
-  [NATIVE_TYPES.SELECT]: Select,
-};
 
 interface FieldItemRendererProps {
   label: string;
@@ -29,38 +28,40 @@ interface FieldItemRendererProps {
   dataPath: string;
 }
 
-function FieldItemRenderer({
-  label,
-  viewData,
-  value,
-  viewType,
-  dataPath,
-}: FieldItemRendererProps) {
-  const { data, onDataChange } = useContext(DataChangeContext);
+const typeElemMap = {
+  [NATIVE_TYPES.INPUT]: ({ value, label }: Partial<FieldItemRendererProps>) => (
+    <Input value={value} placeholder={label} />
+  ),
+  [NATIVE_TYPES.MULTILINE]: ({
+    value,
+    label,
+  }: Partial<FieldItemRendererProps>) => (
+    <Textarea value={value} placeholder={label} />
+  ),
+  [NATIVE_TYPES.SELECT]: ({
+    value,
+    label,
+    viewData,
+  }: Partial<FieldItemRendererProps>) => (
+    <Select placeholder={label}>
+      {viewData?.options?.map((opt) => (
+        <Select.Option key={opt.value} value={opt.value}>
+          {opt.name}
+        </Select.Option>
+      ))}
+    </Select>
+  ),
+};
 
+function FieldItemRenderer(props: FieldItemRendererProps) {
+  const { data, onDataChange } = useContext(DataChangeContext);
+  const { viewType, dataPath } = props;
   const control = typeElemMap[viewType];
   const handleChange = (_: SyntheticEvent, { value }: any) => {
     onDataChange(set(data, dataPath, value));
   };
 
-  return (
-    <Form.Field
-      control={control}
-      label={label}
-      placeholder={label}
-      value={value}
-      options={
-        viewType === NATIVE_TYPES.SELECT && viewData && viewData.options
-          ? viewData.options.map(({ name, value }) => ({
-              key: value,
-              text: name,
-              value,
-            }))
-          : null
-      }
-      onChange={handleChange}
-    />
-  );
+  return control && control(props);
 }
 
 interface DataGroupRendererProps {
@@ -124,9 +125,9 @@ function DataFieldRenderer({
 
   if (isGroupDataField(type)) {
     return (
-      <Card fluid>
-        <Card.Content>
-          <Card.Header>{dataFieldDef.description}</Card.Header>
+      <Card>
+        <div>{dataFieldDef.description}</div>
+        <div>
           {multiple ? (
             (data as Record<string, any>[]).map((dataItem, idx) => (
               <DataGroupRenderer
@@ -143,17 +144,15 @@ function DataFieldRenderer({
               grpPath={dataPath}
             />
           )}
-        </Card.Content>
+        </div>
         {multiple && (
-          <Card.Content extra className={styles.extraContent}>
+          <Card.Footer className={styles.extraContent}>
             <Button
-              positive
-              icon="add"
-              content={`Add ${dataFieldDef.description}`}
-              labelPosition="left"
               onClick={handleAdd(`${dataPath}[${data.length}]`, dataFieldDef)}
-            />
-          </Card.Content>
+            >
+              Add {dataFieldDef.description}
+            </Button>
+          </Card.Footer>
         )}
       </Card>
     );
@@ -182,21 +181,16 @@ function DataFieldRenderer({
         />
       )}
       {multiple && (
-        <Button
-          positive
-          icon="add"
-          content={`Add ${dataFieldDef.description}`}
-          labelPosition="left"
-          onClick={handleAdd(`${dataPath}[${data.length}]`, dataFieldDef)}
-        />
+        <div className={styles.extraContent}>
+          <Button
+            onClick={handleAdd(`${dataPath}[${data.length}]`, dataFieldDef)}
+          >
+            Add {dataFieldDef.description}
+          </Button>
+        </div>
       )}
     </>
   );
-}
-
-interface DataEditorProps {
-  data: Record<string, any>;
-  onDataChange: (data: Record<string, any>) => void;
 }
 
 function DataEditor({ data, onDataChange }: DataEditorProps) {
@@ -207,7 +201,7 @@ function DataEditor({ data, onDataChange }: DataEditorProps) {
       <div>Document Template: {templateDef?.templateName}</div>
       <div>Document Type: {templateDef?.documentType}</div>
       <DataChangeContext.Provider value={{ data, onDataChange }}>
-        <Form>
+        <div>
           {templateDef?.dataFields?.map((dataFieldDef) => (
             <DataFieldRenderer
               key={`${dataFieldDef.field}`}
@@ -216,7 +210,7 @@ function DataEditor({ data, onDataChange }: DataEditorProps) {
               data={data[dataFieldDef.field]}
             />
           ))}
-        </Form>
+        </div>
       </DataChangeContext.Provider>
     </div>
   );
