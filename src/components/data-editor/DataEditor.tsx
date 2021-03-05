@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useContext } from 'react';
-import { Button, Card, Input, Textarea, Select } from '@geist-ui/react';
+import { Button, Card, Form, Input, Select, TextArea } from 'semantic-ui-react';
 import TemplateDefContext from '../../templatedef-context';
 import {
   DATAFIELD_NATIVE_TYPES as NATIVE_TYPES,
@@ -29,39 +29,42 @@ interface FieldItemRendererProps {
 }
 
 const typeElemMap = {
-  [NATIVE_TYPES.INPUT]: ({ value, label }: Partial<FieldItemRendererProps>) => (
-    <Input value={value} placeholder={label} />
-  ),
-  [NATIVE_TYPES.MULTILINE]: ({
-    value,
-    label,
-  }: Partial<FieldItemRendererProps>) => (
-    <Textarea value={value} placeholder={label} />
-  ),
-  [NATIVE_TYPES.SELECT]: ({
-    value,
-    label,
-    viewData,
-  }: Partial<FieldItemRendererProps>) => (
-    <Select placeholder={label}>
-      {viewData?.options?.map((opt) => (
-        <Select.Option key={opt.value} value={opt.value}>
-          {opt.name}
-        </Select.Option>
-      ))}
-    </Select>
-  ),
+  [NATIVE_TYPES.INPUT]: Input,
+  [NATIVE_TYPES.MULTILINE]: TextArea,
+  [NATIVE_TYPES.SELECT]: Select,
 };
 
-function FieldItemRenderer(props: FieldItemRendererProps) {
+function FieldItemRenderer({
+  label,
+  viewData,
+  value,
+  viewType,
+  dataPath,
+}: FieldItemRendererProps) {
   const { data, onDataChange } = useContext(DataChangeContext);
-  const { viewType, dataPath } = props;
   const control = typeElemMap[viewType];
   const handleChange = (_: SyntheticEvent, { value }: any) => {
     onDataChange(set(data, dataPath, value));
   };
 
-  return control && control(props);
+  return (
+    <Form.Field
+      control={control}
+      label={label}
+      placeholder={label}
+      value={value}
+      options={
+        viewType === NATIVE_TYPES.SELECT && viewData && viewData.options
+          ? viewData.options.map(({ name, value }) => ({
+              key: value,
+              text: name,
+              value,
+            }))
+          : null
+      }
+      onChange={handleChange}
+    />
+  );
 }
 
 interface DataGroupRendererProps {
@@ -125,9 +128,9 @@ function DataFieldRenderer({
 
   if (isGroupDataField(type)) {
     return (
-      <Card>
-        <div>{dataFieldDef.description}</div>
-        <div>
+      <Card fluid>
+        <Card.Content>
+          <Card.Header>{dataFieldDef.description}</Card.Header>
           {multiple ? (
             (data as Record<string, any>[]).map((dataItem, idx) => (
               <DataGroupRenderer
@@ -144,15 +147,17 @@ function DataFieldRenderer({
               grpPath={dataPath}
             />
           )}
-        </div>
+        </Card.Content>
         {multiple && (
-          <Card.Footer className={styles.extraContent}>
+          <Card.Content extra className={styles.extraContent}>
             <Button
+              positive
+              icon="add"
+              content={`Add ${dataFieldDef.description}`}
+              labelPosition="left"
               onClick={handleAdd(`${dataPath}[${data.length}]`, dataFieldDef)}
-            >
-              Add {dataFieldDef.description}
-            </Button>
-          </Card.Footer>
+            />
+          </Card.Content>
         )}
       </Card>
     );
@@ -181,13 +186,13 @@ function DataFieldRenderer({
         />
       )}
       {multiple && (
-        <div className={styles.extraContent}>
-          <Button
-            onClick={handleAdd(`${dataPath}[${data.length}]`, dataFieldDef)}
-          >
-            Add {dataFieldDef.description}
-          </Button>
-        </div>
+        <Button
+          positive
+          icon="add"
+          content={`Add ${dataFieldDef.description}`}
+          labelPosition="left"
+          onClick={handleAdd(`${dataPath}[${data.length}]`, dataFieldDef)}
+        />
       )}
     </>
   );
@@ -201,7 +206,7 @@ function DataEditor({ data, onDataChange }: DataEditorProps) {
       <div>Document Template: {templateDef?.templateName}</div>
       <div>Document Type: {templateDef?.documentType}</div>
       <DataChangeContext.Provider value={{ data, onDataChange }}>
-        <div>
+        <Form>
           {templateDef?.dataFields?.map((dataFieldDef) => (
             <DataFieldRenderer
               key={`${dataFieldDef.field}`}
@@ -210,7 +215,7 @@ function DataEditor({ data, onDataChange }: DataEditorProps) {
               data={data[dataFieldDef.field]}
             />
           ))}
-        </div>
+        </Form>
       </DataChangeContext.Provider>
     </div>
   );

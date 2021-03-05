@@ -8,7 +8,7 @@ import {
   faMobileAlt,
   faCalendarAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { LatestTemplateData, Skill } from './LatestTemplate.model';
+import { ResumeData, Skill } from '../data-editor/ResumeData.model';
 import SubSection from './SubSection';
 import IconLabel from './IconLabel';
 import Section from './Section';
@@ -92,7 +92,7 @@ const renderSkillTable = (skills: Partial<Skill>[]) => {
 };
 
 function LatestTemplate(props: LatestTemplateProps) {
-  const data = props.data as LatestTemplateData;
+  const data = props.data as ResumeData;
 
   useEffect(() => {
     document.title = data.docTitle;

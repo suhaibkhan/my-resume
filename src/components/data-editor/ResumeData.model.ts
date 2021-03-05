@@ -28,7 +28,7 @@ export interface PersonalDetail {
   value: string;
 }
 
-export interface LatestTemplateData {
+export interface ResumeData {
   docTitle: string;
   name: string;
   currentLocation: string;

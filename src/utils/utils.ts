@@ -67,6 +67,28 @@ export const set = (obj: any, path: string, value: any): any => {
   return setVal(obj, root, rootVal);
 };
 
+/**
+ * Get value in the obj based on path
+ * Note: Multi dimentional array won't work, only nested objects and array of objects
+ *
+ * @param obj current obj
+ * @param path object path eg: "a.b[2].c"
+ */
+export const get = (obj: any, path: string): any => {
+  if (!path) {
+    return null;
+  }
+
+  const fields = path.split('.');
+
+  if (fields.length === 1) {
+    return getVal(obj, fields[0]);
+  }
+
+  const [root, ...rest] = fields;
+  return get(getVal(obj, root), rest.join('.'));
+};
+
 export const isEmpty = (obj: any) =>
   Array.isArray(obj) ? obj.length === 0 : !obj;
 
