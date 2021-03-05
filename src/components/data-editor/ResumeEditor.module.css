@@ -3,7 +3,12 @@
 }
 
 .skillContainer {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 1em;
+  justify-content: flex-start;
 }
 
-.skillContainer :global(.field) {
+.skillContainer :global(.selection.dropdown) {
+  min-width: 5em !important;
 }

@@ -6,13 +6,19 @@ import {
   InputOnChangeData,
   Input,
   Select,
-  Card,
   Accordion,
   AccordionTitleProps,
 } from 'semantic-ui-react';
 import { set, get } from '../../utils/utils';
 import { ResumeData } from './ResumeData.model';
 import styles from './ResumeEditor.module.css';
+
+interface FormDef {
+  path: string;
+  label?: string;
+  type?: 'input' | 'multiline' | 'select';
+  viewOptions?: any;
+}
 
 const MAIN_FORM: FormDef[][] = [
   [
@@ -52,13 +58,18 @@ const SKILLSET_FORM: FormDef[][] = [
 ];
 
 const SKILLS_FORM: FormDef[] = [
-  { path: 'label', label: 'Label', viewOptions: { fluid: true } },
+  {
+    path: 'label',
+    label: 'Name',
+    viewOptions: { fluid: false, inline: false },
+  },
   {
     path: 'rating',
     label: 'Rating',
     type: 'select',
     viewOptions: {
-      fluid: true,
+      fluid: false,
+      inline: false,
       options: [
         { value: 5, text: '5' },
         { value: 4, text: '4' },
@@ -123,32 +134,45 @@ const panes = [
 
 function SkillsTabPane() {
   const { data } = useContext(DataContext);
+  const [active, setActive] = useState<AccordionTitleProps['index']>(0);
+
+  const handleAccClick = (_: MouseEvent, { index }: AccordionTitleProps) => {
+    setActive((prevActive) => (prevActive !== index ? index : -1));
+  };
 
   return (
     <Tab.Pane>
       <Form>
-        {data?.skillSet?.map((skillSet, index) => (
-          <Card fluid>
-            <Card.Content>
-              <FormRenderer
-                key={`skillSet[${index}]`}
-                formDef={SKILLSET_FORM}
-                pathPrefix={`skillSet[${index}]`}
-              />
-              <div className={styles.skillContainer}>
-                {skillSet?.skills?.map((_, sIndex) => (
-                  <Form.Group widths="equal">
-                    <FormRenderer
-                      key={`skillSet[${index}].skills[${sIndex}]`}
-                      formDef={SKILLS_FORM}
-                      pathPrefix={`skillSet[${index}].skills[${sIndex}]`}
-                    />
-                  </Form.Group>
-                ))}
-              </div>
-            </Card.Content>
-          </Card>
-        ))}
+        <Accordion fluid styled>
+          {data?.skillSet?.map((skillSet, index) => (
+            <>
+              <Accordion.Title
+                index={index}
+                active={index === active}
+                onClick={handleAccClick}
+              >
+                {`Skills Category ${index + 1}`}
+              </Accordion.Title>
+              <Accordion.Content active={index === active}>
+                <FormRenderer
+                  key={`skillSet[${index}]`}
+                  formDef={SKILLSET_FORM}
+                  pathPrefix={`skillSet[${index}]`}
+                />
+                <div className={styles.skillContainer}>
+                  {skillSet?.skills?.map((_, sIndex) => (
+                    <Form.Group key={`skillSet[${index}].skills[${sIndex}]`}>
+                      <FormRenderer
+                        formDef={SKILLS_FORM}
+                        pathPrefix={`skillSet[${index}].skills[${sIndex}]`}
+                      />
+                    </Form.Group>
+                  ))}
+                </div>
+              </Accordion.Content>
+            </>
+          ))}
+        </Accordion>
       </Form>
     </Tab.Pane>
   );
@@ -159,7 +183,7 @@ function ExpTabPane() {
   const [active, setActive] = useState<AccordionTitleProps['index']>(0);
 
   const handleAccClick = (_: MouseEvent, { index }: AccordionTitleProps) => {
-    setActive(index);
+    setActive((prevActive) => (prevActive !== index ? index : -1));
   };
 
   return (
@@ -203,7 +227,7 @@ function EducationTabPane() {
   const [active, setActive] = useState<AccordionTitleProps['index']>(0);
 
   const handleAccClick = (_: MouseEvent, { index }: AccordionTitleProps) => {
-    setActive(index);
+    setActive((prevActive) => (prevActive !== index ? index : -1));
   };
 
   return (
@@ -260,13 +284,6 @@ interface ResumeEditorProps {
 const DataContext = React.createContext<ResumeEditorProps>({
   onDataChange: (data) => {},
 });
-
-interface FormDef {
-  path: string;
-  label: string;
-  type?: 'input' | 'multiline' | 'select';
-  viewOptions?: any;
-}
 
 const typeElemMap = {
   input: Input,
