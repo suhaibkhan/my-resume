@@ -5,10 +5,30 @@
 .skillContainer {
   display: flex;
   flex-wrap: wrap;
-  column-gap: 1em;
+  column-gap: 2em;
   justify-content: flex-start;
 }
 
 .skillContainer :global(.selection.dropdown) {
   min-width: 5em !important;
+}
+
+.sectionTitle {
+  background-color: #21ba45 !important;
+  color: white !important;
+  padding: 0 !important;
+}
+
+.sectionTitle > div {
+  padding: 0.75em 1em;
+}
+
+.sectionTitle:global(.active) > div {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+:global(.field) > label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
