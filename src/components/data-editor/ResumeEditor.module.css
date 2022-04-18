@@ -1,7 +1,3 @@
-.container {
-  padding: 16px;
-}
-
 .skillContainer {
   display: flex;
   flex-wrap: wrap;
@@ -14,21 +10,40 @@
 }
 
 .sectionTitle {
-  background-color: #21ba45 !important;
-  color: white !important;
-  padding: 0 !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.sectionTitle > div {
-  padding: 0.75em 1em;
+.sectionTitle :global(.icon.button) {
+  padding: 0.35em 0.35em 0.35em !important;
 }
 
-.sectionTitle:global(.active) > div {
-  background-color: rgba(0, 0, 0, 0.1) !important;
-}
-
-:global(.field) > label {
+:global(.field) label {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.addBtnContainer {
+  padding: 1em 0;
+  text-align: right;
+}
+
+.nestAddBtnContainer {
+  text-align: right;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin-bottom: 1em;
+}
+
+.deleteBtn {
+  display: flex;
+  align-items: flex-end;
+}
+
+.deleteBtn :global(.button.icon) {
+  /* padding: 0.25em 0.25em 0.25em !important; */
+  /* margin-top: 1.6em; */
 }
